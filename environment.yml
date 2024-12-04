@@ -1,0 +1,45 @@
+name: lsdist_env
+
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+
+  # https://github.com/pytorch/pytorch/pull/101414
+  - pytorch==2.1.0
+  # https://anaconda.org/nvidia/cuda
+  - cuda=11.8
+
+  - datasets
+  - transformers
+
+  - sentencepiece
+
+  - numpy
+  - pandas
+  - seaborn
+  - matplotlib
+  - scikit-learn
+
+  - tqdm
+  - fire
+  - srsly
+  - wandb
+  - loguru
+  - joblib
+  - python-lmdb
+  - python-isal
+  - more-itertools
+
+  - setuptools
+  - setuptools_scm
+
+  - pip
+  - pip:
+      # The `fairscale` package on conda-forge does not have versions higher than CUDA 11.2.
+      - fairscale
+      - fschat[model_worker,train]

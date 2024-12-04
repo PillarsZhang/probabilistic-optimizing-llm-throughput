@@ -1,0 +1,297 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Attach",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 25678
+            }
+            // debug="-m debugpy --listen 25678 --wait-for-client"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Sample: llama_chat(7b)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "args": [
+                "--nnodes=1",
+                "--nproc_per_node=1",
+                "--rdzv-backend=c10d",
+                "--rdzv-endpoint=localhost:0",
+                "scripts/sample/llama_chat.py",
+                "--num-samples=12",
+                "--dataset-selected-slices=63:5000",
+                // "--dataset-selected-slices=5465:10000",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Sample: llama_chat(13b)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "args": [
+                "--nnodes=1",
+                "--nproc_per_node=2",
+                "--rdzv-backend=c10d",
+                "--rdzv-endpoint=localhost:0",
+                "scripts/sample/llama_chat.py",
+                "--llama-ckpt-dir=../llama/llama-2-13b-chat",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Sample: dist demo llama_chat(7b)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "args": [
+                "--nnodes=1",
+                "--nproc_per_node=1",
+                "--rdzv-backend=c10d",
+                "--rdzv-endpoint=localhost:0",
+                "scripts/sample/llama_dist_demo.py",
+                "--num-samples=20",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Sample: dist_to_trainable",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/sample/dist_to_trainable.py",
+            "args": [
+                "--dataset-selected-slices=':100'",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Sample: test_lmdb_read",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/sample/test_lmdb_read.py",
+            "args": [
+                "--supp-round=${input:suppRoundInput}",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Train: pt_train",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/train/pt_train.py",
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Train: pt_test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/train/pt_test.py",
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Train: ssch pt_test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/ssch/pt_test.py",
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Dispatch: llama_chat(7b)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "args": [
+                "--nnodes=1",
+                "--nproc_per_node=1",
+                "--rdzv-backend=c10d",
+                "--rdzv-endpoint=localhost:0",
+                "scripts/dispatch/throughput_benchmark.py",
+                "--batched-rule='cdf',0.9",
+                // "--batched-rule='dump','temp/pdf_d.pkl'"
+                // "--batched-rule='ward',",
+                // "--batched-rule='exchange',0.75"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Dispatch: eval_performance",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "args": [
+                "--nnodes=1",
+                "--nproc_per_node=1",
+                "--rdzv-backend=c10d",
+                "--rdzv-endpoint=localhost:0",
+                "scripts/dispatch/eval_performance.py"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Dispatch: ssch llama_chat(7b)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "args": [
+                "--nnodes=1",
+                "--nproc_per_node=1",
+                "--rdzv-backend=c10d",
+                "--rdzv-endpoint=localhost:0",
+                "scripts/dispatch/throughput_benchmark.py",
+                // "--batched-rule='ssch',0.8,50,vbs,fcr",
+                // "--batched-rule=('vanilla',)",
+                "--batched-rule='ssch',0.8,50,fcr",
+                // "--batched-rule='ssch',0.8,50",
+                "--ssch-lengths-json=saved/ssch/get_ssch_predict/my_max_bin100_bench.json"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Dispatch: search llama_chat(7b)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "args": [
+                "--nnodes=1",
+                "--nproc_per_node=1",
+                "--rdzv-backend=c10d",
+                "--rdzv-endpoint=localhost:0",
+                "scripts/dispatch/throughput_benchmark.py",
+                "--dataset-selected-slices=10000:12048",
+                "--chunk-size=128",
+                // "--dist-batch-size=16",
+                // "--gen_batch_size=16",
+                "--dist-batch-size=8",
+                "--gen_batch_size=8",
+                // "--batched-rule='search',100,vbs,fcr",
+                // "--batched-rule='search',100",
+                "--batched-rule='search',100,fcr",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Train: [ssch] pt_train",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/ssch/pt_train.py",
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Train: pt_train_scalar",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/train/pt_train_scalar.py",
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Dispatch: test_sjf (fcfs)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/vllm/test_sjf.py",
+            "args": [
+                "--lsdist-endpoint=http://192.168.0.10:21848/",
+                "--noenable-sjf",
+                "--num-messages=100",
+                "--rate=4",
+                "--max-num-seqs=16"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Dispatch: test_sjf (sjf)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/vllm/test_sjf.py",
+            "args": [
+                "--lsdist-endpoint=http://192.168.0.10:21848/",
+                "--enable-sjf",
+                "--num-messages=100",
+                "--rate=4",
+                "--max-num-seqs=16",
+                // "--length-priority-weight=0.0"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Dispatch: ssch mlp llama_chat(7b)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "torch.distributed.run",
+            "args": [
+                "--nnodes=1",
+                "--nproc_per_node=1",
+                "--rdzv-backend=c10d",
+                "--rdzv-endpoint=localhost:0",
+                "scripts/dispatch/throughput_benchmark.py",
+                "--batched-rule='ssch',0.6,100,vbs,fcr",
+                "--model-scalar",
+                "--pt-ckpt=saved/train/pt_train_scalar/pt_ckpt",
+                // "--tag=20241123A-max-data-noise-1.0>epoch=108,train_loss=0.0184035,valid_loss=0.0299776",
+                // "--model-scalar-tag=max",
+                "--tag=20241123A-mean-data-noise-1.0>epoch=86,train_loss=0.00555856,valid_loss=0.00583236",
+                "--model-scalar-tag=mean"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Train: [bert] pt_train",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/bert/pt_train.py",
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Train: [bert] pt_train_vicuna",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/bert/pt_train_vicuna.py",
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+    ],
+    "inputs": [
+        {
+            "id": "suppRoundInput",
+            "type": "promptString",
+            "description": "Enter the value for --supp-round",
+            "default": "0"
+        }
+    ],
+}

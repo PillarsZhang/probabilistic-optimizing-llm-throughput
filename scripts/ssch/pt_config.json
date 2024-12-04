@@ -1,0 +1,12 @@
+{
+    "train_batch_size": 1024,
+    "train_num_workers": 0,
+    "valid_batch_size": 1024,
+    "valid_num_workers": 0,
+    "optimizer": {
+        "type": "Adam",
+        "params": {
+            "lr": 1e-5
+        }
+    }
+}

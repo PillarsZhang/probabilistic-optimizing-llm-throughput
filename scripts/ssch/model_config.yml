@@ -1,0 +1,6 @@
+backbone:
+  class: "MLP"
+  kwargs:
+    input_dim: 4096
+    hidden_dims: [8192, 4096]
+    output_dim: 2048

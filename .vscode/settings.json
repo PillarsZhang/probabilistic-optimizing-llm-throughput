@@ -1,0 +1,14 @@
+{
+    "editor.formatOnSave": true,
+    "notebook.formatOnSave.enabled": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "black-formatter.args": [
+        "--line-length=100"
+    ],
+    "python.analysis.extraPaths": [
+        "~/workspace/2023-10-03_lsdist/vllm",
+    ],
+    "github.copilot.chat.localeOverride": "en",
+}

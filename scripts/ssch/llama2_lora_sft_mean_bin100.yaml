@@ -1,0 +1,53 @@
+# https://github.com/hiyouga/LLaMA-Factory/blob/fc7f1cc365ee481b76f9c7e6f1947b49cf131fbf/examples/lora_single_gpu/sft.sh
+
+# code ../LLaMA-Factory/src/llmtuner/data/template.py
+# _register_template(
+#     name="llama2_nosys",
+#     format_user=StringFormatter(slots=[{"bos_token"}, "[INST] {{content}} [/INST]"]),
+#     format_system=StringFormatter(slots=["<<SYS>>\n{{content}}\n<</SYS>>\n\n"]),
+# )
+
+dataset_dir: saved/ssch/export_openai_format
+
+# model
+model_name_or_path: meta-llama/Llama-2-7b-chat-hf
+
+# method
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_target: q_proj,v_proj
+
+# dataset
+dataset: my_mean_bin100_train,my_mean_bin100_valid
+template: llama2_nosys
+cutoff_len: 1024
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+# output
+output_dir: saved/ssch/llama2_lora_sft/mean_bin100
+logging_steps: 10
+save_steps: 100
+plot_loss: true
+overwrite_output_dir: true
+
+# train
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 8
+learning_rate: 0.0001
+num_train_epochs: 10.0
+lr_scheduler_type: cosine
+warmup_steps: 0.1
+fp16: true
+
+# eval
+val_size: 1000
+per_device_eval_batch_size: 8
+evaluation_strategy: steps
+eval_steps: 100
+
+# save
+load_best_model_at_end: true
+metric_for_best_model: eval_loss
+greater_is_better: false

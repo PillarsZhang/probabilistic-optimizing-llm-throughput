@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lsdist"
+description = "Optimizing LLM Throughput with Probabilistic Length Modeling and Dynamic Scheduling"
+readme = "README.md"
+requires-python = ">=3.10"
+# license = { file = "LICENSE.txt" }
+keywords = ["llm", "sequence", "length", "distribution"]
+authors = [{ name = "Kaihao Zhang", email = "khzhang@stu.xjtu.edu.cn" }]
+
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = ["torch>=2.1"]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/PillarsZhang/probabilistic-optimizing-llm-throughput"
+Repository = "https://github.com/PillarsZhang/probabilistic-optimizing-llm-throughput.git"
+
+[tool.setuptools]
+packages = ["lsdist"]
